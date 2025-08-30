@@ -13,3 +13,6 @@ DATABASE_URL="postgresql://neondb_owner:npg_jqrlUOvDHZ49@ep-bold-mouse-adycd1l5-
 # NEXTAUTH
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET="16fcffcfb7918d148ba2b539ab23afa2" 
+
+google client id cannot commited
+
