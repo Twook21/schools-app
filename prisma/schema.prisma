@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")
+}
+
+// Enum untuk Role User
+enum Role {
+  USER
+  ADMIN
+}
+
+// Model untuk autentikasi user (email/password dan OAuth)
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  hashedPassword String?
+  image         String?
+  accounts      Account[]
+  role          Role      @default(USER) 
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Model NextAuth.js untuk mengelola akun OAuth
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// Model formulir kontak
+model ContactMessage {
+  id        String    @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  isRead    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+}
+
+// Model data berita
+model News {
+  id        String    @id @default(cuid())
+  title     String
+  summary   String
+  image     String
+  date      String 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// Model kegiatan
+model Activity {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String
+  date        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
